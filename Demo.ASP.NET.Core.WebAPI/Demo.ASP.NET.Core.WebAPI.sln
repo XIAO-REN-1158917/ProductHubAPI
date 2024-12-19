@@ -5,6 +5,8 @@ VisualStudioVersion = 17.11.35222.181
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo.ASP.NET.Core.WebAPI.Server", "Demo.ASP.NET.Core.WebAPI.Server\Demo.ASP.NET.Core.WebAPI.Server.csproj", "{137E5394-8601-48F7-BBDD-B4C8CBDAE1AF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo.ASP.NET.Core.Client", "..\Demo.ASP.NET.Core.Client\Demo.ASP.NET.Core.Client.csproj", "{C58CC51D-646C-4898-AD36-0B82902F9E8A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{137E5394-8601-48F7-BBDD-B4C8CBDAE1AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{137E5394-8601-48F7-BBDD-B4C8CBDAE1AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{137E5394-8601-48F7-BBDD-B4C8CBDAE1AF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C58CC51D-646C-4898-AD36-0B82902F9E8A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C58CC51D-646C-4898-AD36-0B82902F9E8A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C58CC51D-646C-4898-AD36-0B82902F9E8A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C58CC51D-646C-4898-AD36-0B82902F9E8A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
