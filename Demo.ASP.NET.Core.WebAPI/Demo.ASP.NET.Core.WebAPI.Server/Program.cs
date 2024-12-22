@@ -1,14 +1,18 @@
 using Demo.ASP.NET.Core.WebAPI.Server.Data;
 using Demo.ASP.NET.Core.WebAPI.Server.Models;
+using Demo.ASP.NET.Core.WebAPI.Server.Services;
+using Demo.ASP.NET.Core.WebAPI.Server.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Configure the database context.
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// Add services to the container.
-
+// Register services to the container.
+builder.Services.AddScoped<ProductRepository>(); // register ProductRepository first
+builder.Services.AddScoped<ProductService>();    // and ProductService
 builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();
@@ -16,7 +20,7 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// seed data for domo
+// Seed data for demo
 using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
@@ -36,8 +40,6 @@ using (var scope = app.Services.CreateScope())
         context.SaveChanges();
     }
 }
-
-
 
 if (app.Environment.IsDevelopment())
 {
