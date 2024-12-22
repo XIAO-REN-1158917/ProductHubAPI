@@ -1,6 +1,7 @@
 ﻿using Demo.ASP.NET.Core.WebAPI.Server.Data;
 using Demo.ASP.NET.Core.WebAPI.Server.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace Demo.ASP.NET.Core.WebAPI.Server.Repositories
 {
@@ -49,5 +50,18 @@ namespace Demo.ASP.NET.Core.WebAPI.Server.Repositories
                 await _context.SaveChangesAsync();
             }
         }
+
+        // Check if a product exists by a condition
+        public async Task<bool> ExistsAsync(Expression<Func<Product, bool>> predicate)
+        {
+            return await _context.Products.AnyAsync(predicate);
+        }
+
+        // Get a category by name
+        public async Task<Category?> GetCategoryByNameAsync(string categoryName)
+        {
+            return await _context.Categories.FirstOrDefaultAsync(c => c.Name == categoryName);
+        }
+
     }
 }

@@ -6,11 +6,11 @@ namespace Demo.ASP.NET.Core.WebAPI.Server.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class ProductsController : ControllerBase
+    public class ProductController : ControllerBase
     {
         private readonly ProductService _productService;
 
-        public ProductsController(ProductService productService)
+        public ProductController(ProductService productService)
         {
             _productService = productService;
         }
@@ -29,6 +29,14 @@ namespace Demo.ASP.NET.Core.WebAPI.Server.Controllers
             if (product == null)
                 return NotFound();
             return Ok(product);
+        }
+
+        // Check in real-time if the product name already exists.
+        [HttpGet("check-name")]
+        public async Task<IActionResult> CheckProductName([FromQuery] string name)
+        {
+            var exists = await _productService.IsProductNameTakenAsync(name);
+            return Ok(new { IsTaken = exists });
         }
     }
 }
