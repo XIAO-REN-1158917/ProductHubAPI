@@ -11,9 +11,9 @@ namespace Demo.ASP.NET.Core.WebAPI.Server.Common
         public bool Status { get; set; } // Status of response
         public string Message { get; set; } // Prompt
         public T Data { get; set; } // Data
-        public object Metadata { get; set; } // Metadata（for example, pagination information.）
+        public object? Metadata { get; set; } // Metadata（for example, pagination information.）
 
-        public ApiResponse(bool status, string message, T data, object metadata = null)
+        public ApiResponse(bool status, string message, T data, object? metadata = null)
         {
             Status = status;
             Message = message;
