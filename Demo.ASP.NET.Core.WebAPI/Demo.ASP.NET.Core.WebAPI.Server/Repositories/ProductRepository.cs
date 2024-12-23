@@ -51,7 +51,11 @@ namespace Demo.ASP.NET.Core.WebAPI.Server.Repositories
             }
         }
 
-        // Check if a product exists by a condition
+        /// <summary>
+        /// Checks if any product exists that matches the given condition.
+        /// </summary>
+        /// <param name="predicate">The condition to evaluate (e.g., p => p.Name == "Apple").</param>
+        /// <returns>True if a product exists; otherwise, false.</returns>
         public async Task<bool> ExistsAsync(Expression<Func<Product, bool>> predicate)
         {
             return await _context.Products.AnyAsync(predicate);

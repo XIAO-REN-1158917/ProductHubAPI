@@ -1,6 +1,7 @@
 ﻿using Demo.ASP.NET.Core.WebAPI.Server.DTOs;
 using Demo.ASP.NET.Core.WebAPI.Server.Models;
 using Demo.ASP.NET.Core.WebAPI.Server.Repositories;
+using Demo.ASP.NET.Core.WebAPI.Server.Validation;
 
 namespace Demo.ASP.NET.Core.WebAPI.Server.Services
 {
@@ -31,12 +32,8 @@ namespace Demo.ASP.NET.Core.WebAPI.Server.Services
             var product = await _productRepository.GetByIdAsync(id);
             if (product == null) return null;
 
-            return new ProductResponseDto
-            {
-                Id = product.Id,
-                ProductName = product.Name,
-                CategoryName = product.Category?.Name
-            };
+            // Map entity to response DTO
+            return MapToResponseDto(product);
         }
 
         // Check if product name already exists
@@ -53,20 +50,8 @@ namespace Demo.ASP.NET.Core.WebAPI.Server.Services
         // Add a new product
         public async Task<ProductResponseDto> AddProductAsync(ProductCreateDto productDto)
         {
-            if (productDto == null)
-            {
-                throw new ArgumentNullException(nameof(productDto), "Product data cannot be null.");
-            }
-
-            if (string.IsNullOrEmpty(productDto.ProductName))
-            {
-                throw new ArgumentException("Product name cannot be null or empty.", nameof(productDto.ProductName));
-            }
-
-            if (string.IsNullOrEmpty(productDto.CategoryName))
-            {
-                throw new ArgumentException("Category name cannot be null or empty.", nameof(productDto.CategoryName));
-            }
+            // Validate input
+            DtoValidator.ValidateProductCreateDto(productDto);
 
             // Validate if product name is unique
             if (await IsProductNameTakenAsync(productDto.ProductName))
@@ -74,12 +59,8 @@ namespace Demo.ASP.NET.Core.WebAPI.Server.Services
                 throw new InvalidOperationException("Product name already exists.");
             }
 
-            // Find the category by name
-            var category = await _productRepository.GetCategoryByNameAsync(productDto.CategoryName);
-            if (category == null)
-            {
-                throw new InvalidOperationException($"Category '{productDto.CategoryName}' does not exist.");
-            }
+            // Find the category
+            var category = await GetCategoryOrThrowAsync(productDto.CategoryName);
 
             // Map DTO to Product entity
             var product = new Product
@@ -91,15 +72,30 @@ namespace Demo.ASP.NET.Core.WebAPI.Server.Services
             // Save product to the database
             await _productRepository.AddAsync(product);
 
-            // Return the created product as a DTO
+            // Map entity to response DTO
+            return MapToResponseDto(product);
+        }
+
+        
+        private async Task<Category> GetCategoryOrThrowAsync(string categoryName)
+        {
+            var category = await _productRepository.GetCategoryByNameAsync(categoryName);
+            if (category == null)
+            {
+                throw new InvalidOperationException($"Category '{categoryName}' does not exist.");
+            }
+            return category;
+        }
+
+        private ProductResponseDto MapToResponseDto(Product product)
+        {
             return new ProductResponseDto
             {
                 Id = product.Id,
                 ProductName = product.Name,
-                CategoryName = product.Category?.Name
+                CategoryName = product.Category.Name 
             };
         }
-
 
     }
 }
