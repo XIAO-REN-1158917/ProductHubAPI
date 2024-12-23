@@ -12,8 +12,16 @@ namespace Demo.ASP.NET.Core.WebAPI.Server.Data
         public DbSet<Category> Categories { get; set; }
         public DbSet<Product> Products { get; set; }
 
-        //It is also possible to use this method for explicit configuration to handle more complex logic.
-        //In this demo, I use EF Core's automatic inference mechanism.
+        //In my demo, I used EF Core's convention-based configuration
+        //because it is faster and suitable for simple scenarios, such as one-to-one mapping between models and database tables.
+        //With conventions, EF Core automatically identifies relationships like foreign keys and primary keys,
+        //making development more convenient.
+        //
+        //However, I also understand that EF Core supports explicit configuration using Fluent API,
+        //which is better suited for complex scenarios,
+        //such as custom foreign key relationships, indexes, or constraints.
+        //In real-world projects, when dealing with complex database requirements,
+        //I would use the OnModelCreating method for explicit configuration. 
 
         //protected override void OnModelCreating(ModelBuilder modelBuilder)
         //{
