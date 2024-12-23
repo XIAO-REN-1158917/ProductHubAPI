@@ -13,6 +13,32 @@ namespace Demo.ASP.NET.Core.WebAPI.Server.Services
             _productRepository = productRepository;
         }
 
+        // Get all products and convert to DTOs
+        public async Task<IEnumerable<ProductResponseDto>> GetAllProductsAsync()
+        {
+            var products = await _productRepository.GetAllAsync();
+            return products.Select(p => new ProductResponseDto
+            {
+                Id = p.Id,
+                ProductName = p.Name,
+                CategoryName = p.Category?.Name
+            });
+        }
+
+        // Get a product by ID and convert to DTO
+        public async Task<ProductResponseDto?> GetProductByIdAsync(int id)
+        {
+            var product = await _productRepository.GetByIdAsync(id);
+            if (product == null) return null;
+
+            return new ProductResponseDto
+            {
+                Id = product.Id,
+                ProductName = product.Name,
+                CategoryName = product.Category?.Name
+            };
+        }
+
         // Check if product name already exists
         public async Task<bool> IsProductNameTakenAsync(string name)
         {
@@ -74,30 +100,6 @@ namespace Demo.ASP.NET.Core.WebAPI.Server.Services
             };
         }
 
-        // Get all products and convert to DTOs
-        public async Task<IEnumerable<ProductResponseDto>> GetAllProductsAsync()
-        {
-            var products = await _productRepository.GetAllAsync();
-            return products.Select(p => new ProductResponseDto
-            {
-                Id = p.Id,
-                ProductName = p.Name,
-                CategoryName = p.Category?.Name
-            });
-        }
 
-        // Get a product by ID and convert to DTO
-        public async Task<ProductResponseDto?> GetProductByIdAsync(int id)
-        {
-            var product = await _productRepository.GetByIdAsync(id);
-            if (product == null) return null;
-
-            return new ProductResponseDto
-            {
-                Id = product.Id,
-                ProductName = product.Name,
-                CategoryName = product.Category?.Name
-            };
-        }
     }
 }
