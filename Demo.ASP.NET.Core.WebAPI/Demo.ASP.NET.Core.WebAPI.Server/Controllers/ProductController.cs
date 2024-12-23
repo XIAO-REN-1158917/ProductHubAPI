@@ -1,9 +1,7 @@
 ﻿using Demo.ASP.NET.Core.WebAPI.Server.Common;
 using Demo.ASP.NET.Core.WebAPI.Server.DTOs;
 using Demo.ASP.NET.Core.WebAPI.Server.Services;
-using Humanizer;
 using Microsoft.AspNetCore.Mvc;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Demo.ASP.NET.Core.WebAPI.Server.Controllers
 {
