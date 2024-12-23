@@ -18,12 +18,7 @@ namespace Demo.ASP.NET.Core.WebAPI.Server.Services
         public async Task<IEnumerable<ProductResponseDto>> GetAllProductsAsync()
         {
             var products = await _productRepository.GetAllAsync();
-            return products.Select(p => new ProductResponseDto
-            {
-                Id = p.Id,
-                ProductName = p.Name,
-                CategoryName = p.Category?.Name
-            });
+            return products.Select(MapToResponseDto);
         }
 
         // Get a product by ID and convert to DTO
@@ -76,7 +71,9 @@ namespace Demo.ASP.NET.Core.WebAPI.Server.Services
             return MapToResponseDto(product);
         }
 
-        
+
+        //Encapsulate these methods
+        //to maintain the simplicity of the main logic in the Service and facilitate reuse.
         private async Task<Category> GetCategoryOrThrowAsync(string categoryName)
         {
             var category = await _productRepository.GetCategoryByNameAsync(categoryName);
