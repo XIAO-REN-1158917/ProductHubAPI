@@ -75,6 +75,38 @@ namespace Demo.ASP.NET.Core.WebAPI.Server.Services
             return MapToResponseDto(product);
         }
 
+        //Update an existing product
+        public async Task<ProductResponseDto> UpdateProductAsync(int id, ProductCreateDto productDto)
+        {
+            // Validate input
+            DtoValidator.ValidateProductCreateDto(productDto);
+
+            // Find the product to update
+            var product = await _productRepository.GetByIdAsync(id);
+            if (product == null)
+            {
+                throw new InvalidOperationException($"Product with ID {id} does not exist.");
+            }
+
+            // Validate if product name is unique (exclude the current product)
+            if (product.Name != productDto.ProductName && await IsProductNameTakenAsync(productDto.ProductName))
+            {
+                throw new InvalidOperationException("Product name already exists.");
+            }
+
+            // Find the category
+            var category = await GetCategoryOrThrowAsync(productDto.CategoryName);
+
+            // Map DTO to Product entity
+            product.Name = productDto.ProductName;
+            product.Category = category;
+
+            // Save changes to the database
+            await _productRepository.UpdateAsync(product);
+
+            // Map entity to response DTO
+            return MapToResponseDto(product);
+        }
 
         //Encapsulate these methods
         //to maintain the simplicity of the main logic in the Service and facilitate reuse.

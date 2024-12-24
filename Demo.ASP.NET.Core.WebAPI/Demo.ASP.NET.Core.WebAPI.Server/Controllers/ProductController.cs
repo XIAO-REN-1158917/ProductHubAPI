@@ -98,5 +98,29 @@ namespace Demo.ASP.NET.Core.WebAPI.Server.Controllers
             }
 
         }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateProduct([FromRoute] int id, [FromBody] ProductCreateDto productDto)
+        {
+            try
+            {
+                var productResponse = await _productService.UpdateProductAsync(id, productDto);
+
+                return Ok(new ApiResponse<ProductResponseDto>(
+                        true,
+                        "Product successfully updated",
+                        productResponse
+                        )
+                    );
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
     }
 }
