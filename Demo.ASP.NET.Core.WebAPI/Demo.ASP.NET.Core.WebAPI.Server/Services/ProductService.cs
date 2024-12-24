@@ -108,7 +108,7 @@ namespace Demo.ASP.NET.Core.WebAPI.Server.Services
             return MapToResponseDto(product);
         }
 
-        public async Task<bool> DeleteProductAsync(int id)
+        public async Task DeleteProductAsync(int id)
         {
 
             // Find the product to delete
@@ -119,8 +119,6 @@ namespace Demo.ASP.NET.Core.WebAPI.Server.Services
             }
 
             await _productRepository.DeleteAsync(id);
-
-            return true;
         }
         
 
