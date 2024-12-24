@@ -108,6 +108,22 @@ namespace Demo.ASP.NET.Core.WebAPI.Server.Services
             return MapToResponseDto(product);
         }
 
+        public async Task<bool> DeleteProductAsync(int id)
+        {
+
+            // Find the product to delete
+            var product = await _productRepository.GetByIdAsync(id);
+            if (product == null)
+            {
+                throw new InvalidOperationException($"Product with ID {id} does not exist.");
+            }
+
+            await _productRepository.DeleteAsync(id);
+
+            return true;
+        }
+        
+
         //Encapsulate these methods
         //to maintain the simplicity of the main logic in the Service and facilitate reuse.
         private async Task<Category> GetCategoryOrThrowAsync(string categoryName)

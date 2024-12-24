@@ -122,5 +122,19 @@ namespace Demo.ASP.NET.Core.WebAPI.Server.Controllers
                 return BadRequest(new { message = ex.Message });
             }
         }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteProduct([FromRoute] int id)
+        {
+            try
+            {
+                var result = await _productService.DeleteProductAsync(id);
+                return NoContent();
+            }
+            catch (InvalidOperationException ex) 
+            {
+                return NotFound(new { message = ex.Message });
+            }
+        }
     }
 }
