@@ -3,6 +3,7 @@ using Demo.ASP.NET.Core.WebAPI.Server.Models;
 using Demo.ASP.NET.Core.WebAPI.Server.Services;
 using Demo.ASP.NET.Core.WebAPI.Server.Repositories;
 using Microsoft.EntityFrameworkCore;
+using Demo.ASP.NET.Core.WebAPI.Server.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -48,6 +49,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 app.UseAuthorization();
 

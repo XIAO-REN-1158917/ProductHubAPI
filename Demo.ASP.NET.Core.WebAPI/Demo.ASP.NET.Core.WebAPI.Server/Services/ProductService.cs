@@ -34,10 +34,14 @@ namespace Demo.ASP.NET.Core.WebAPI.Server.Services
         // Check if product name already exists
         public async Task<bool> IsProductNameTakenAsync(string name)
         {
-            if (string.IsNullOrEmpty(name))
-            {
-                throw new ArgumentException("Product name cannot be null or empty.", nameof(name));
-            }
+            // Logically, non-null validation is needed here, but EF Core and ASP.NET Core have built-in automatic validation mechanisms. 
+            // For simple validations, such as non-null checks, leveraging these mechanisms reduces redundancy and improves maintainability.
+            // For more complex validation logic that depends on business rules or database queries, 
+            // it can be implemented in the service layer with error handling managed through middleware for consistency.
+            //if (string.IsNullOrEmpty(name))
+            //{
+            //    throw new ArgumentException("Product name cannot be null or empty.", nameof(name));
+            //}
 
             return await _productRepository.ExistsAsync(p => p.Name == name);
         }

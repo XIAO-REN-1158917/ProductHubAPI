@@ -9,23 +9,25 @@ namespace Demo.ASP.NET.Core.WebAPI.Server.Attributes
         protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
         {
             // Retrieve ProductService from the dependency injection container.
-            //var productService = (ProductService)validationContext.GetService(typeof(ProductService));
-            var productService = validationContext.GetService(typeof(ProductService)) as ProductService;
+            var productService = validationContext.GetService<ProductService>();
             if (productService == null)
             {
                 return new ValidationResult("Validation service is not available.");
             }
 
-            var name = value as string;
-
-            if (productService == null || string.IsNullOrEmpty(name))
-            {
-                return new ValidationResult("Validation service or value is missing.");
-            }
-
+            var name = (string)value!;
+           
             // Check if the product name already exists
             var existsTask = productService.IsProductNameTakenAsync(name);
             existsTask.Wait(); // Avoid asynchronous calls
+            //In the Controller, I provided asynchronous methods to support real-time validation for the front-end,
+            //while custom attributes are primarily used for back-end form validation.
+
+            //Considering that ASP.NET Core's default validation mechanism is synchronous,
+            //I chose to use synchronous implementation in the attributes to keep the code more concise.
+
+            // For high-performance requirements or complex business scenarios,
+            // I would prioritise asynchronous validation.
             if (existsTask.Result)
             {
                 return new ValidationResult("Product name already exists.");
@@ -35,3 +37,7 @@ namespace Demo.ASP.NET.Core.WebAPI.Server.Attributes
         }
     }
 }
+
+//In this backend validation scenario, I rely on ASP.NET Core's built-in model validation mechanism to handle ValidationResult.
+//The framework automatically stores ValidationResult(string) in ModelState and returns an HTTP 400 response with error details when validation fails.
+//This approach reduces the amount of code needed for explicitly handling validation results and improves development efficiency.
