@@ -58,5 +58,34 @@ namespace Demo.ASP.NET.Core.WebAPI.Server.Controllers
             var exists = await _productService.IsProductNameTakenAsync(name);
             return Ok(new { IsTaken = exists });
         }
+
+        [HttpPost]
+        public async Task<IActionResult> AddNewProduct([FromBody] ProductCreateDto productDto)
+        {
+
+            try
+            {
+                var productResponse = await _productService.AddProductAsync(productDto);
+
+                return CreatedAtAction(
+                    nameof(GetProductById),
+                    new { id = productResponse.Id },
+                    new ApiResponse<ProductResponseDto>(
+                        true,
+                        "Product successfully created",
+                        productResponse
+                        )
+                    );
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+
+        }
     }
 }
