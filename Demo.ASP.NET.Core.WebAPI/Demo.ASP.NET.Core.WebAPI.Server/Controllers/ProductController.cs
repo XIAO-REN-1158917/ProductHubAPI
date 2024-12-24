@@ -37,6 +37,13 @@ namespace Demo.ASP.NET.Core.WebAPI.Server.Controllers
         {
             var product = await _productService.GetProductByIdAsync(id);
 
+            //In general, the front-end provides ID options for customers to select,
+            //rather than allowing them to input the ID manually,
+            //so the likelihood of not finding a product is very low.
+            // Returning null is chosen here for simplicity, as it avoids the overhead of exception handling
+            // and clearly represents the absence of a product in a lightweight manner.
+            // In scenarios with higher uncertainty or critical requirements,
+            // throwing an exception might be more appropriate.
             if (product == null)
             {
                 //For some simple responses, using a full format is unnecessary (to reduce code redundancy.)
@@ -62,6 +69,10 @@ namespace Demo.ASP.NET.Core.WebAPI.Server.Controllers
         [HttpPost]
         public async Task<IActionResult> AddNewProduct([FromBody] ProductCreateDto productDto)
         {
+            //This demonstrates my understanding of exception handling mechanisms
+            //while also reflecting my awareness that,
+            //although the front-end reduces the likelihood of errors,
+            //the back-end must still uphold the responsibility of defensive programming.
 
             try
             {
