@@ -74,67 +74,37 @@ namespace Demo.ASP.NET.Core.WebAPI.Server.Controllers
             //although the front-end reduces the likelihood of errors,
             //the back-end must still uphold the responsibility of defensive programming.
 
-            try
-            {
-                var productResponse = await _productService.AddProductAsync(productDto);
+            var productResponse = await _productService.AddProductAsync(productDto);
 
-                return CreatedAtAction(
-                    nameof(GetProductById),
-                    new { id = productResponse.Id },
-                    new ApiResponse<ProductResponseDto>(
-                        true,
-                        "Product successfully created",
-                        productResponse
-                        )
-                    );
-            }
-            catch (ArgumentException ex)
-            {
-                return BadRequest(new { message = ex.Message });
-            }
-            catch (InvalidOperationException ex)
-            {
-                return BadRequest(new { message = ex.Message });
-            }
-
+            return CreatedAtAction(
+                nameof(GetProductById),
+                new { id = productResponse.Id },
+                new ApiResponse<ProductResponseDto>(
+                    true,
+                    "Product successfully created",
+                    productResponse
+                    )
+                );
         }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateProduct([FromRoute] int id, [FromBody] ProductCreateDto productDto)
         {
-            try
-            {
-                var productResponse = await _productService.UpdateProductAsync(id, productDto);
+            var productResponse = await _productService.UpdateProductAsync(id, productDto);
 
-                return Ok(new ApiResponse<ProductResponseDto>(
-                        true,
-                        "Product successfully updated",
-                        productResponse
-                        )
-                    );
-            }
-            catch (ArgumentException ex)
-            {
-                return BadRequest(new { message = ex.Message });
-            }
-            catch (InvalidOperationException ex)
-            {
-                return BadRequest(new { message = ex.Message });
-            }
+            return Ok(new ApiResponse<ProductResponseDto>(
+                    true,
+                    "Product successfully updated",
+                    productResponse
+                    )
+                );
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProduct([FromRoute] int id)
         {
-            try
-            {
-                var result = await _productService.DeleteProductAsync(id);
-                return NoContent();
-            }
-            catch (InvalidOperationException ex) 
-            {
-                return NotFound(new { message = ex.Message });
-            }
+            await _productService.DeleteProductAsync(id);
+            return NoContent();
         }
     }
 }
