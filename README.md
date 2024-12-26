@@ -68,6 +68,17 @@ Data Access Layer, encapsulates the logic for direct interactions with the datab
 
 Business Logic Layer, encapsulates business rules and interacts with the repository Layer.
 
+#### Test
+
+```bash
+dotnet add package xunit
+dotnet add package Moq
+dotnet add package Microsoft.NET.Test.Sdk
+dotnet add package xunit.runner.visualstudio
+```
+
+
+
 #### Validation
 
 A dedicated repository for data validation tools, where commonly used validation utilities can be encapsulated and reused.
@@ -79,3 +90,7 @@ Stores project configurations, such as database connection strings and other env
 #### Program.cs
 
 Project entry file, responsible for configuring services, setting up the middleware pipeline, and running the Web API.
+
+
+
+**Tip: After starting the application, you can use Swagger to test the APIs.**

@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 
 namespace Demo.ASP.NET.Core.WebAPI.Server.Repositories
 {
-    public class ProductRepository
+    public class ProductRepository : IProductRepository
     {
         private readonly ApplicationDbContext _context;
 
