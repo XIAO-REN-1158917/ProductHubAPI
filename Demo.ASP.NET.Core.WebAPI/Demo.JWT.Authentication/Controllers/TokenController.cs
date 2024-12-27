@@ -75,7 +75,7 @@ namespace Demo.JWT.Authentication.Controllers
             };
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(signingKey));
             var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-            var jwtToken = new JwtSecurityToken(issuer, audience, claims, expires: DateTime.UtcNow.AddMinutes(5), signingCredentials: credentials);
+            var jwtToken = new JwtSecurityToken(issuer, audience, claims, expires: DateTime.UtcNow.AddSeconds(5), signingCredentials: credentials);
             var token = new JwtSecurityTokenHandler().WriteToken(jwtToken);
             return Ok(token);
         }

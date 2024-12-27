@@ -37,18 +37,20 @@ builder.Services.AddAuthentication(a =>
         ValidateAudience = true,
         ValidAudience = "TokenDemoAPI",
         ValidateLifetime = true,
+        //This disables the time skew, which is useful for tokens with very short lifetimes and can be used during testing.
+        //ClockSkew = TimeSpan.Zero 
     };
-    //j.Events = new JwtBearerEvents
-    //{
-    //    OnAuthenticationFailed = context =>
-    //    {
-    //        if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
-    //        {
-    //            context.Response.Headers.Add("isexpired", "true");
-    //        }
-    //        return Task.CompletedTask;
-    //    }
-    //};
+    j.Events = new JwtBearerEvents
+    {
+        OnAuthenticationFailed = context =>
+        {
+            if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
+            {
+                context.Response.Headers.Append("isexpired", "true");
+            }
+            return Task.CompletedTask;
+        }
+    };
 });
 
 builder.Services.AddAuthorization(options =>
