@@ -1,0 +1,59 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Add User - Authentication Demo</title>
+    <link href="../bootstrap/css/bootstrap.css" rel="stylesheet" />
+    <script src="../jquery/jquery.min.js"></script>
+</head>
+<body>
+    <div style="padding:20px;border:1px solid #ccc;width:800px;margin:30px;">
+        <h3>Add User</h3>
+        <h5>1. Role only accepts "staff" or "admin," and both must be in lowercase.</h5>
+        <h5>2. This is for testing purposes only. </h5>
+        <h5>3. The username and password are not validated.</h5>
+        <h5>4. Please test kindly.</h5>
+        <hr />
+        <div class="form-floating">
+            <div class="mb-3">
+                <label class="form-label">UserName</label>
+                <input type="text" id="userName" class="form-control">
+            </div>
+            <div class="mb-3">
+                <label class="form-label">UserPwd</label>
+                <input type="text" id="userPwd" class="form-control">
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Role</label>
+                <input type="text" id="role" class="form-control">
+            </div>
+            <div class="mb-3">
+                <input type="submit" id="btn" value="Register" class="btn btn-primary" />
+            </div>
+            <div>
+                <span id="msg" style="color:red"></span>
+            </div>
+        </div>
+    </div>
+    <script>
+        $("#btn").click(function () {
+            $.ajax({
+                type: "post",
+                url: "https://localhost:6001/api/Account",
+                dataType: "text",
+                data: JSON.stringify({
+                    UserName: $("#userName").val(),
+                    UserPwd: $("#userPwd").val(),
+                    Role: $("#role").val()
+                }),
+                contentType: "application/json",
+                success: function (result) {
+                    if (result == "1") {
+                        $("#msg").text("Add Successfully");
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

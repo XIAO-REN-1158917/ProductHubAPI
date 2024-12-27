@@ -1,0 +1,91 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>TokenTest - staff OR admin</title>
+    <link href="../bootstrap/css/bootstrap.css" rel="stylesheet" />
+    <script src="../jquery/jquery.min.js"></script>
+</head>
+<body style="margin:20px;">
+    <h3>Token Test</h3>
+    <button id="staffBtn" class="btn btn-primary">Staff</button>
+    <button id="adminBtn" class="btn btn-secondary">Admin</button>
+    <hr />
+    <table id="showTable" class="table table-bordered">
+        <thead>
+            <tr>
+                <td>Msg</td>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+    <span id="errorMsg" style="color: red;"></span>
+
+    <script>
+        $(document).ready(function () {
+            var tbody = $("#showTable tbody");
+            var errorMsg = $("#errorMsg");
+
+            // Staff button click event
+            $("#staffBtn").click(function () {
+                callApi("https://localhost:6002/api/TokenDemo/staff");
+            });
+
+            // Admin button click event
+            $("#adminBtn").click(function () {
+                callApi("https://localhost:6002/api/TokenDemo/admin");
+            });
+
+            // Function to call API
+            function callApi(apiUrl) {
+                tbody.empty();
+                errorMsg.text("");
+                $.ajax({
+                    type: 'get',
+                    contentType: 'application/json',
+                    url: apiUrl,
+                    beforeSend: function (xhr) {
+                        var accessToken = localStorage.getItem("token");
+                        xhr.setRequestHeader('Authorization', 'Bearer ' + accessToken);
+                    },
+                    success: function (data) {
+                        // Display the returned data in the table
+                        $.each(data, function (n, value) {
+                            var trs = "<tr><td>" + value.msg + "</td></tr>";
+                            tbody.append(trs);
+                        });
+                    },
+                    error: function (xhr) {
+                        // Handle errors and display the message
+                        if (xhr.status === 403) {
+                            var response = JSON.parse(xhr.responseText);
+                            errorMsg.text(response.message);
+                        } else if (xhr.status === 401 && xhr.getResponseHeader('isexpired') === 'true') {
+                            getRefreshAccessToken();
+                        } else {
+                            errorMsg.text("An unexpected error occurred.");
+                        }
+                    }
+                });
+            }
+
+            // Token Refresh
+            function getRefreshAccessToken() {
+                $.ajax({
+                    type: 'get',
+                    contentType: 'application/json',
+                    url: 'https://localhost:6001/api/Token/Refresh',
+                    data: { accessToken: localStorage.getItem("token") },
+                    success: function (token) {
+                        localStorage.setItem("token", token);
+                        alert("Token refreshed. Please retry your request.");
+                    },
+                    error: function () {
+                        errorMsg.text("Failed to refresh token.");
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

@@ -49,6 +49,31 @@ builder.Services.AddAuthentication(a =>
                 context.Response.Headers.Append("isexpired", "true");
             }
             return Task.CompletedTask;
+        },
+
+        // Custom forbidden event for insufficient permissions
+        OnForbidden = async context =>
+        {
+            var requestedEndpoint = context.HttpContext.Request.Path;
+            string responseMessage;
+
+            // Customise the message based on the endpoint
+            if (requestedEndpoint.StartsWithSegments("/api/TokenDemo/staff"))
+            {
+                responseMessage = "No Staff Permission";
+            }
+            else if (requestedEndpoint.StartsWithSegments("/api/TokenDemo/admin"))
+            {
+                responseMessage = "No Admin Permission";
+            }
+            else
+            {
+                responseMessage = "Access Denied";
+            }
+
+            context.Response.StatusCode = StatusCodes.Status403Forbidden;
+            context.Response.ContentType = "application/json";
+            await context.Response.WriteAsync($"{{\"message\": \"{responseMessage}\"}}");
         }
     };
 });
