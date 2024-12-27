@@ -8,5 +8,7 @@ namespace Demo.JWT.Authentication.Data
         public int UserId { get; set; }
         public string? UserName { get; set; }
         public string? UserPwd { get; set; }
+
+        public string? Role { get; set; }
     }
 }

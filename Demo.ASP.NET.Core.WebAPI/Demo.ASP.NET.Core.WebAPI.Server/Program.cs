@@ -4,8 +4,63 @@ using Demo.ASP.NET.Core.WebAPI.Server.Services;
 using Demo.ASP.NET.Core.WebAPI.Server.Repositories;
 using Demo.ASP.NET.Core.WebAPI.Server.Middlewares;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(
+        builder =>
+        {
+            builder.AllowAnyOrigin().AllowAnyHeader();
+            builder.WithExposedHeaders(new string[] { "isexpired" });
+        });
+});
+
+builder.Services.AddAuthentication(a =>
+{
+    a.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    a.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(j =>
+{
+    j.RequireHttpsMetadata = false;
+    j.SaveToken = true;
+    j.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("MySecretKey123456789012345678901234567890")),
+        ValidateIssuer = true,
+        ValidIssuer = "Gary",
+        ValidateAudience = true,
+        ValidAudience = "TokenDemoAPI",
+        ValidateLifetime = true,
+    };
+    //j.Events = new JwtBearerEvents
+    //{
+    //    OnAuthenticationFailed = context =>
+    //    {
+    //        if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
+    //        {
+    //            context.Response.Headers.Add("isexpired", "true");
+    //        }
+    //        return Task.CompletedTask;
+    //    }
+    //};
+});
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("StaffLevel", policy => 
+        policy.RequireRole("staff").Build());// Only users with "Staff" role can access
+    options.AddPolicy("AdminLevel", policy =>
+        policy.RequireRole("admin")); // Only users with "Admin" role can access
+});
+
+
+
 
 // Configure the database context
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -36,10 +91,21 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+//This allows the service to be started using an exe file to run in the background,
+//making it convenient to conduct tests on a single device.
+if (app.Environment.IsProduction())
+{
+    app.Urls.Add("https://*:6002");
+}
 
+// Middleware pipeline
 app.UseHttpsRedirection();
 
 app.UseMiddleware<ExceptionHandlingMiddleware>();
+
+app.UseCors(); // Enable CORS
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 
