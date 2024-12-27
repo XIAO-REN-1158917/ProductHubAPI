@@ -1,4 +1,4 @@
-# Demo_ASP.NET-Core-Web-API
+# Demo.ASP.NET.Core.WebAPI.Server
 
 
 
@@ -41,6 +41,8 @@ Contains utility classes, such as `ApiResponse`, which standardise and encapsula
 Contains RESTful API controllers that handle HTTP requests and delegate logic to the service layer.
 
 -For example, `ProductController` provides CRUD actions for managing products.
+
+**Note**: `TokenDemoController`is a controller for testing JWT distributed authentication and authorization. If you're interested, please refer to the introduction in the **Demo.JWT.Authentication** section.
 
 #### Data
 
@@ -137,3 +139,5 @@ entry point
 This project serves as an introduction to my backend development skills. It highlights my understanding of modular programming, interface-based design, and unit testing. While it is not a production-ready application, it reflects my ability to adapt to different team workflows and maintain code quality.
 
 Thank you for your time! I look forward to discussing this project and how I can contribute to your team.
+
+# Demo.JWT.Authentication
