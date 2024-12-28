@@ -22,11 +22,9 @@ The structure is intentionally layered to reflect industry best practices. This 
 
 ## 2. Project Structure
 
-### Overview
+#### Overview
 
 The project follows a **layered architecture**. Below is an overview of the main components:
-
-### 
 
 #### Attributes
 
@@ -140,4 +138,31 @@ This project serves as an introduction to my backend development skills. It high
 
 Thank you for your time! I look forward to discussing this project and how I can contribute to your team.
 
+
+
 # Demo.JWT.Authentication
+
+## 1. Objective
+
+This demo showcases a distributed identity authentication and authorisation service using JWT. It implements the issuance and refreshing of role-based tokens to demonstrate my understanding of JWT-based authentication and authorisation architecture.
+
+- **Server-side** (`Demo.ASP.NET.Core.WebAPI.Server`): 
+  - Implements a `TokenDemoController` and policy-based authorisation.
+  - Utilises middleware for token validation, including permissions and expiration.
+
+- **Client-side** (`Demo.ASP.NET.Core.WebAPI.Client`): 
+  - Provides pages for user registration, login, token retrieval, and token verification.
+
+> **Note:** This demo focuses on the core JWT logic and is not a full-scale production implementation. Features such as data validation and method encapsulation have been intentionally omitted.
+
+## 2. Project Functionality
+
+- Issue tokens based on user roles upon successful login.
+- Refresh tokens using an `AccessToken` when the current token expires.
+- Validate token permissions and expiration through server-side middleware.
+- Test functionality via the client:
+  1. Add a user on the **Register** page.
+  2. Log in on the **Login** page (you'll be redirected to the **TokenTest** page with the token).
+  3. Interact with buttons to verify token information through the server's `TokenDemoController`.
+
+
