@@ -12,6 +12,14 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddCors(options =>
 {
+    //The default policy is used here for convenience in testing,
+    //but a named policy can also be used to specify the trusted party.
+
+    // Example of named policy
+    //options.AddPolicy("TrustedName",
+    //    builder => {
+    //        builder.WithOrigins("https://something");
+    //    });
     options.AddDefaultPolicy(
         builder =>
         {
@@ -131,6 +139,8 @@ app.UseHttpsRedirection();
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 app.UseCors(); // Enable CORS
+// Example of named policy
+//app.UseCors("TrustedName")
 
 app.UseAuthentication();
 

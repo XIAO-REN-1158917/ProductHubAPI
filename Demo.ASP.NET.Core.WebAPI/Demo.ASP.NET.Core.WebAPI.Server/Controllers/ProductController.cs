@@ -33,17 +33,13 @@ namespace Demo.ASP.NET.Core.WebAPI.Server.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetProductById(int id)
+        public async Task<IActionResult> GetProductById([FromRoute] int id)
         {
             var product = await _productService.GetProductByIdAsync(id);
 
             //In general, the front-end provides ID options for customers to select,
             //rather than allowing them to input the ID manually,
             //so the likelihood of not finding a product is very low.
-            // Returning null is chosen here for simplicity, as it avoids the overhead of exception handling
-            // and clearly represents the absence of a product in a lightweight manner.
-            // In scenarios with higher uncertainty or critical requirements,
-            // throwing an exception might be more appropriate.
             if (product == null)
             {
                 //For some simple responses, using a full format is unnecessary (to reduce code redundancy.)

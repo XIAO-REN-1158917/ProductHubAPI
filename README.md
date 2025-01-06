@@ -6,7 +6,7 @@ Thank you for taking the time to review my project. This demo showcases a modula
 
 The primary objective is to provide a clear structure, making it maintainable, extensible, and easy to understand. While this is a demo project, the approach used can be scaled or simplified depending on the requirements of a real-world application.
 
-
+**NOTE:**You can use Swagger to test the RESTful API.
 
 ## 1. Objective
 
@@ -14,7 +14,6 @@ This project focuses on **structure and modular development** rather than extens
 
 - My ability to create clean, modular codebases.
 - My understanding of teamwork by designing with future collaboration in mind.
-- My proficiency in implementing unit tests for core business logic.
 
 The structure is intentionally layered to reflect industry best practices. This ensures that the codebase is maintainable, easy to extend, and adaptable to different team workflows.
 
@@ -166,3 +165,6 @@ This demo showcases a distributed identity authentication and authorisation serv
   3. Interact with buttons to verify token information through the server's `TokenDemoController`.
 
 
+# Demo.ASP.NET.Core.Client
+
+This frontend service is solely for testing Demo.JWT.Authentication. Of course, you can also use Postman for testing.
