@@ -168,3 +168,5 @@ This demo showcases a distributed identity authentication and authorisation serv
 # Demo.ASP.NET.Core.Client
 
 This frontend service is solely for testing Demo.JWT.Authentication. Of course, you can also use Postman for testing.
+
+If you're interested in my frontend skills, please check out <https://github.com/XIAO-REN-1158917/DemoReactTypeScriptFrontEnd>.
