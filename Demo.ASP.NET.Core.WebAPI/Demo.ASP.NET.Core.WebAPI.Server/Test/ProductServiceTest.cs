@@ -5,9 +5,6 @@ using Demo.ASP.NET.Core.WebAPI.Server.Services;
 using Demo.ASP.NET.Core.WebAPI.Server.Repositories;
 using Demo.ASP.NET.Core.WebAPI.Server.DTOs;
 using Demo.ASP.NET.Core.WebAPI.Server.Models;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Demo.ASP.NET.Core.WebAPI.Server.Test
 {
