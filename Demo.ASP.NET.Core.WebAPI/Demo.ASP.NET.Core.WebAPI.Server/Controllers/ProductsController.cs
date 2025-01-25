@@ -7,51 +7,61 @@ namespace Demo.ASP.NET.Core.WebAPI.Server.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class ProductController : ControllerBase
+    public class ProductsController : ControllerBase
     {
-        private readonly ProductService _productService;
+        private readonly IProductService _productService;
 
-        public ProductController(ProductService productService)
+        public ProductsController(IProductService productService)
         {
             _productService = productService;
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllProducts()
+        public async Task<IEnumerable<ProductResponseDto>> GetAllProducts()
         {
             var products = await _productService.GetAllProductsAsync();
             //The use of an independently encapsulated response format is to
             //demonstrate my understanding of typical practices in commercial development and team collaboration.
             //(The data in the demo itself is very simple and does not necessarily require an independently encapsulated format.)
-            var response = new ApiResponse<IEnumerable<ProductResponseDto>>(
-            true,
-            "Successfully retrieved products",
-            products,
-            new { totalItems = products.Count() }
-            );
-            return Ok(response);
+            //var response = new ApiResponse<IEnumerable<ProductResponseDto>>(
+            //    true,
+            //    "Successfully retrieved products",
+            //    products,
+            //    new { totalItems = products.Count() }
+            //);
+            //return Ok(response);
+            //Hey
+
+            return products;
         }
+
+
+        [HttpGet("test")]
+        public IActionResult GetProductById(
+            [FromQuery] bool isValid)
+        {
+            throw new NullReferenceException();
+
+            //if (isValid)
+            //{
+            //    return Ok("I am good");
+            //}
+            //else
+            //{
+            //    return Ok(new { Result = "Failed", Reason = "Your are invalid" });
+            //}
+        }
+
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetProductById([FromRoute] int id)
         {
             var product = await _productService.GetProductByIdAsync(id);
-
-            //In general, the front-end provides ID options for customers to select,
-            //rather than allowing them to input the ID manually,
-            //so the likelihood of not finding a product is very low.
+            
             if (product == null)
-            {
-                //For some simple responses, using a full format is unnecessary (to reduce code redundancy.)
-                //However, the final decision depends on the team's requirements.
-                return NotFound(new { message = "Product not found", productId = id });
-            }
+                throw new InvalidOperationException();
 
-            return Ok(new ApiResponse<ProductResponseDto>(
-                true,
-                "Successfully retrieved the product",
-                product
-            ));
+            return Ok(product);
         }
 
         // Check in real-time if the product name already exists.
@@ -65,22 +75,33 @@ namespace Demo.ASP.NET.Core.WebAPI.Server.Controllers
         [HttpPost]
         public async Task<IActionResult> AddNewProduct([FromBody] ProductCreateDto productDto)
         {
+            //TODO:
+            //var category = null;
+            //product.Category = category.ToString();
+            
+            
+            
             //This demonstrates my understanding of exception handling mechanisms
             //while also reflecting my awareness that,
             //although the front-end reduces the likelihood of errors,
             //the back-end must still uphold the responsibility of defensive programming.
 
+
+
+
             var productResponse = await _productService.AddProductAsync(productDto);
 
-            return CreatedAtAction(
-                nameof(GetProductById),
-                new { id = productResponse.Id },
-                new ApiResponse<ProductResponseDto>(
-                    true,
-                    "Product successfully created",
-                    productResponse
-                    )
-                );
+            //return CreatedAtAction(
+            //    nameof(GetProductById),
+            //    new { id = productResponse.Id },
+            //    new ApiResponse<ProductResponseDto>(
+            //        true,
+            //        "Product successfully created",
+            //        productResponse
+            //        )
+            //    );
+            //return the created object
+            return Ok(productResponse);
         }
 
         [HttpPut("{id}")]
@@ -88,13 +109,18 @@ namespace Demo.ASP.NET.Core.WebAPI.Server.Controllers
         {
             var productResponse = await _productService.UpdateProductAsync(id, productDto);
 
-            return Ok(new ApiResponse<ProductResponseDto>(
-                    true,
-                    "Product successfully updated",
-                    productResponse
-                    )
-                );
+            //return Ok(new ApiResponse<ProductResponseDto>(
+            //        true,
+            //        "Product successfully updated",
+            //        productResponse
+            //        )
+            //    );
+
+            return Ok(productResponse);
         }
+
+        // YAGNI: You Ain't Gonna Need It
+        // Code is debt 
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProduct([FromRoute] int id)
