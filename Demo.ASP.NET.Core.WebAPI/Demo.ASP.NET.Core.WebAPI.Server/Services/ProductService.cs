@@ -1,17 +1,22 @@
-﻿using Demo.ASP.NET.Core.WebAPI.Server.DTOs;
+﻿using Demo.ASP.NET.Core.WebAPI.Server.Data;
+using Demo.ASP.NET.Core.WebAPI.Server.DTOs;
 using Demo.ASP.NET.Core.WebAPI.Server.Models;
 using Demo.ASP.NET.Core.WebAPI.Server.Repositories;
 using Demo.ASP.NET.Core.WebAPI.Server.Validation;
+using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace Demo.ASP.NET.Core.WebAPI.Server.Services
 {
-    public class ProductService
+    public class ProductService : IProductService
     {
         private readonly IProductRepository _productRepository;
+        private readonly ApplicationDbContext _dbContext;
 
-        public ProductService(IProductRepository productRepository)
+        public ProductService(IProductRepository productRepository, ApplicationDbContext dbContext)
         {
             _productRepository = productRepository;
+            _dbContext = dbContext;
         }
 
         // Get all products and convert to DTOs
@@ -43,7 +48,9 @@ namespace Demo.ASP.NET.Core.WebAPI.Server.Services
             //    throw new ArgumentException("Product name cannot be null or empty.", nameof(name));
             //}
 
-            return await _productRepository.ExistsAsync(p => p.Name == name);
+            //return await _productRepository.ExistsAsync(p => p.Name == name);
+
+            return await _dbContext.Products.AnyAsync(p => p.Name == name);
         }
 
         // Add a new product
@@ -110,20 +117,21 @@ namespace Demo.ASP.NET.Core.WebAPI.Server.Services
 
         public async Task DeleteProductAsync(int id)
         {
-
-            // Find the product to delete
             var product = await _productRepository.GetByIdAsync(id);
             if (product == null)
-            {
-                throw new InvalidOperationException($"Product with ID {id} does not exist.");
-            }
+                throw new NullReferenceException($"Product with ID {id} does not exist.");
 
-            await _productRepository.DeleteAsync(id);
+            await _productRepository.DeleteAsync(product);
         }
-        
+
 
         //Encapsulate these methods
         //to maintain the simplicity of the main logic in the Service and facilitate reuse.
+
+        //This demonstrates my understanding of exception handling mechanisms
+        //while also reflecting my awareness that,
+        //although the front-end reduces the likelihood of errors,
+        //the back-end must still uphold the responsibility of defensive programming.
         private async Task<Category> GetCategoryOrThrowAsync(string categoryName)
         {
             var category = await _productRepository.GetCategoryByNameAsync(categoryName);
@@ -140,7 +148,7 @@ namespace Demo.ASP.NET.Core.WebAPI.Server.Services
             {
                 Id = product.Id,
                 ProductName = product.Name,
-                CategoryName = product.Category.Name 
+                CategoryName = product.Category.Name
             };
         }
 

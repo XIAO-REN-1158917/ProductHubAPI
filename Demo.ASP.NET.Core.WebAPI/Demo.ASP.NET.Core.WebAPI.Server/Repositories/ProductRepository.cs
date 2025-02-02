@@ -1,5 +1,6 @@
 ﻿using Demo.ASP.NET.Core.WebAPI.Server.Data;
 using Demo.ASP.NET.Core.WebAPI.Server.Models;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
@@ -41,14 +42,21 @@ namespace Demo.ASP.NET.Core.WebAPI.Server.Repositories
         }
 
         // Delete product
-        public async Task DeleteAsync(int id)
+        //public async Task DeleteAsync(int id)
+        //{
+        //    var product = await GetByIdAsync(id);
+        //    if (product != null)
+        //    {
+        //        _context.Products.Remove(product);
+        //        await _context.SaveChangesAsync();
+        //    }
+        //}
+
+        // Delete product
+        public async Task DeleteAsync(Product product)
         {
-            var product = await GetByIdAsync(id);
-            if (product != null)
-            {
-                _context.Products.Remove(product);
-                await _context.SaveChangesAsync();
-            }
+           _context.Products.Remove(product);
+           await _context.SaveChangesAsync();
         }
 
         /// <summary>
@@ -66,6 +74,16 @@ namespace Demo.ASP.NET.Core.WebAPI.Server.Repositories
         {
             return await _context.Categories.FirstOrDefaultAsync(c => c.Name == categoryName);
         }
+
+        //public async Task CreateEntityViaStoreProcedure()
+        //{
+        //    //var columnName = "Url";
+        //    //var columnValue = new SqlParameter("columnValue", "http://SomeURL");
+
+        //    //var blogs = await context.Blogs
+        //    //    .FromSqlRaw($"SELECT * FROM [Blogs] WHERE {columnName} = @columnValue", columnValue)
+        //    //    .ToListAsync();
+        //}
 
     }
 }

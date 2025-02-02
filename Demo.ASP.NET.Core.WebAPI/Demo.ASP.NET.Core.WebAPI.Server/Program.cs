@@ -101,9 +101,16 @@ builder.Services.AddAuthorization(options =>
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+
 // Register services to the container
+
+//DI -> level - transi
+//builder.Services.AddTransient - 
+//builder.Services.AddScopeds
+//builder.Services.AddSingleton
+
 builder.Services.AddScoped<IProductRepository, ProductRepository>(); // Register ProductRepository
-builder.Services.AddScoped<ProductService>();    // Register ProductService
+builder.Services.AddScoped<IProductService, ProductService>();    // Register ProductService
 builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();

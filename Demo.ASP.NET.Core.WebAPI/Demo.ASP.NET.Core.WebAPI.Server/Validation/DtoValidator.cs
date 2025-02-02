@@ -1,9 +1,18 @@
 ﻿using Demo.ASP.NET.Core.WebAPI.Server.DTOs;
+using Demo.ASP.NET.Core.WebAPI.Server.Services;
 
 namespace Demo.ASP.NET.Core.WebAPI.Server.Validation
 {
     public class DtoValidator
     {
+
+        private readonly IProductService _productService;
+
+        public DtoValidator(IProductService productService)
+        {
+            _productService = productService;
+        }
+
         /// <summary>
         /// This utility class centralises validation logic for DTOs, promoting code reuse 
         /// and separation of concerns. By encapsulating validation here, the service layer 
