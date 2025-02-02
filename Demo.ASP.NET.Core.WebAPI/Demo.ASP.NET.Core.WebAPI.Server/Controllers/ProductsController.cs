@@ -20,8 +20,8 @@ namespace Demo.ASP.NET.Core.WebAPI.Server.Controllers
         public async Task<IEnumerable<ProductResponseDto>> GetAllProducts()
         {
             var products = await _productService.GetAllProductsAsync();
-            //The use of an independently encapsulated response format is to
-            //demonstrate my understanding of typical practices in commercial development and team collaboration.
+            //The use of an independently encapsulated response format is intended to
+            //demonstrate my understanding of alternative practices in commercial development and team collaboration.
             //(The data in the demo itself is very simple and does not necessarily require an independently encapsulated format.)
             //var response = new ApiResponse<IEnumerable<ProductResponseDto>>(
             //    true,
@@ -30,27 +30,10 @@ namespace Demo.ASP.NET.Core.WebAPI.Server.Controllers
             //    new { totalItems = products.Count() }
             //);
             //return Ok(response);
-            //Hey
 
             return products;
         }
 
-
-        [HttpGet("test")]
-        public IActionResult GetProductById(
-            [FromQuery] bool isValid)
-        {
-            throw new NullReferenceException();
-
-            //if (isValid)
-            //{
-            //    return Ok("I am good");
-            //}
-            //else
-            //{
-            //    return Ok(new { Result = "Failed", Reason = "Your are invalid" });
-            //}
-        }
 
 
         [HttpGet("{id}")]
@@ -75,20 +58,6 @@ namespace Demo.ASP.NET.Core.WebAPI.Server.Controllers
         [HttpPost]
         public async Task<IActionResult> AddNewProduct([FromBody] ProductCreateDto productDto)
         {
-            //TODO:
-            //var category = null;
-            //product.Category = category.ToString();
-            
-            
-            
-            //This demonstrates my understanding of exception handling mechanisms
-            //while also reflecting my awareness that,
-            //although the front-end reduces the likelihood of errors,
-            //the back-end must still uphold the responsibility of defensive programming.
-
-
-
-
             var productResponse = await _productService.AddProductAsync(productDto);
 
             //return CreatedAtAction(

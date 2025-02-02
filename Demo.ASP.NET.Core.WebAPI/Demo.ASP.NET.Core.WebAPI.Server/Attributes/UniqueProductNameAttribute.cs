@@ -8,11 +8,7 @@ namespace Demo.ASP.NET.Core.WebAPI.Server.Attributes
         protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
         {
             // Retrieve ProductService from the dependency injection container.
-            var productService = validationContext.GetService<IProductService>();
-            //if (productService == null)
-            //{
-            //    return new ValidationResult("Validation service is not available.");
-            //}
+            var productService = validationContext.GetRequiredService<IProductService>();
 
             var name = (string)value!;
            

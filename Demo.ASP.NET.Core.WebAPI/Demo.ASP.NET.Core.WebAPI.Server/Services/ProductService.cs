@@ -127,6 +127,11 @@ namespace Demo.ASP.NET.Core.WebAPI.Server.Services
 
         //Encapsulate these methods
         //to maintain the simplicity of the main logic in the Service and facilitate reuse.
+
+        //This demonstrates my understanding of exception handling mechanisms
+        //while also reflecting my awareness that,
+        //although the front-end reduces the likelihood of errors,
+        //the back-end must still uphold the responsibility of defensive programming.
         private async Task<Category> GetCategoryOrThrowAsync(string categoryName)
         {
             var category = await _productRepository.GetCategoryByNameAsync(categoryName);
