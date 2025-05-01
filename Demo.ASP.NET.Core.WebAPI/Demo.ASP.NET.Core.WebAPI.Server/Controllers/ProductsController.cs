@@ -16,14 +16,14 @@ namespace Demo.ASP.NET.Core.WebAPI.Server.Controllers
             _productService = productService;
         }
 
-        [HttpGet("test-error")]
-        public IActionResult ThrowTestException()
-        {
-            throw new Exception("Test error.");
-        }
+        //[HttpGet("test-error")]
+        //public IActionResult ThrowTestException()
+        //{
+        //    throw new Exception("Test error.");
+        //}
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ProductResponseDto>>> GetAllProducts()
+        public async Task<IEnumerable<ProductResponseDto>> GetAllProducts()
         {
             var products = await _productService.GetAllProductsAsync();
             //The use of an independently encapsulated response format is intended to
@@ -36,9 +36,7 @@ namespace Demo.ASP.NET.Core.WebAPI.Server.Controllers
             //    new { totalItems = products.Count() }
             //);
             //return Ok(response);
-
-            Console.WriteLine($"Returned {products.Count()} products");
-            return Ok(products);
+            return products;
         }
 
 
