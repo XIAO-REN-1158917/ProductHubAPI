@@ -176,3 +176,21 @@ static void SeedData(ApplicationDbContext context)
         context.SaveChanges();
     }
 }
+//static void SeedData(ApplicationDbContext context)
+//{
+//    context.Database.EnsureDeleted();
+//    context.Database.EnsureCreated();
+
+//    var electronics = new Category { Name = "Electronics" };
+//    var groceries = new Category { Name = "Groceries" };
+
+//    context.Categories.AddRange(electronics, groceries);
+
+//    context.Products.AddRange(
+//        new Product { Name = "Laptop", Category = electronics },
+//        new Product { Name = "Smartphone", Category = electronics },
+//        new Product { Name = "Apple", Category = groceries }
+//    );
+
+//    context.SaveChanges();
+//}

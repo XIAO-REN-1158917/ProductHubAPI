@@ -16,6 +16,12 @@ namespace Demo.ASP.NET.Core.WebAPI.Server.Controllers
             _productService = productService;
         }
 
+        //[HttpGet("test-error")]
+        //public IActionResult ThrowTestException()
+        //{
+        //    throw new Exception("Test error.");
+        //}
+
         [HttpGet]
         public async Task<IEnumerable<ProductResponseDto>> GetAllProducts()
         {
@@ -30,7 +36,6 @@ namespace Demo.ASP.NET.Core.WebAPI.Server.Controllers
             //    new { totalItems = products.Count() }
             //);
             //return Ok(response);
-
             return products;
         }
 
